@@ -14,6 +14,7 @@ RSpec.describe 'Applications show page' do
       expect(page).to have_content('Denver')
       expect(page).to have_content('CO')
       expect(page).to have_content('12345')
+      expect(page).to have_content("Because I'm me.")
       expect(page).to have_content('In Progress')
     end
   end
@@ -26,6 +27,6 @@ def application_params
     city: 'Denver',
     state: 'CO',
     zip_code: '12345',
-    description: 'Because I\'m me.'
+    description: "Because I'm me."
   }
 end

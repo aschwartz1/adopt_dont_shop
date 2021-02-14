@@ -11,5 +11,7 @@
   <%= form.text_field(:state) %>
   <%= form.label(:zip_code, 'Zip Code:') %>
   <%= form.text_field(:zip_code) %>
+  <%= form.label(:description, 'Why do you want to adopt?') %>
+  <%= form.text_area(:description) %>
   <%= form.submit(:submit) %>
 <% end %>

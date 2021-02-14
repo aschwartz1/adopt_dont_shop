@@ -11,6 +11,7 @@ RSpec.describe 'Applications new page' do
         fill_in(:city, with: 'Denver')
         fill_in(:state, with: 'CO')
         fill_in(:zip_code, with: '12345')
+        fill_in(:description, with: "Because I'm me.")
 
         click_on(:submit)
       end
@@ -21,7 +22,7 @@ RSpec.describe 'Applications new page' do
       expect(page).to have_content('Denver')
       expect(page).to have_content('CO')
       expect(page).to have_content('12345')
-      # TODO Where does 'description of why I would make a good home' from Issue #59 come from?
+      expect(page).to have_content("Because I'm me.")
       expect(page).to have_content('In Progress')
     end
   end
