@@ -15,7 +15,7 @@ RSpec.describe 'Applications new page' do
         click_on(:submit)
       end
 
-      expec(current_path).to match(%r{applications/\d+})
+      expect(current_path).to match(%r{applications/\d+})
       expect(page).to have_content('Benedict Cumberbatch')
       expect(page).to have_content('123 My Lane')
       expect(page).to have_content('Denver')

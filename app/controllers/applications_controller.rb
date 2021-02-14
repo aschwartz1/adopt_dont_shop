@@ -15,7 +15,7 @@ class ApplicationsController < ApplicationController
   private
 
   def application_params
-    params.permit(:name, :street, :city, :zip_code)
+    params.permit(:name, :street, :city, :state, :zip_code)
   end
 
   def id_param
