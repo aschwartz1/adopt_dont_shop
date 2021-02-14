@@ -11,7 +11,6 @@ RSpec.describe 'Pets index page' do
   end
 
   it "displays each pet in the system with attributes" do
-
     visit "/pets"
 
     expect(page).to have_content(@pet1.image)
@@ -27,6 +26,17 @@ RSpec.describe 'Pets index page' do
     expect(page).to have_content(@shelter2.name)
 
     expect(page).to_not have_content(@shelter3.name)
+  end
+
+  it 'shows a link to start an application' do
+    visit '/pets'
+
+    within "#pet-#{@pet1.id}" do
+      expect(page).to have_link('Start an Application')
+      click_link('Start an Application')
+    end
+
+    expect(current_path).to eq('/applications/new')
   end
 
   it "can delete a pet from pet index page" do
@@ -50,11 +60,8 @@ RSpec.describe 'Pets index page' do
     end
 
     fill_in "name", with: "Calvin"
-
     click_button "Update Pet"
-
     expect(current_path).to eq("/pets/#{@pet1.id}")
-
     expect(page).to have_content("Calvin")
     expect(page).to_not have_content("Thor")
   end
