@@ -1,8 +1,19 @@
-<h2>Application Information</h2>
-<p>Status: <span class="bold"><%= @application.status %></span></p>
-<p>Name: <%= @application.name %></p>
-<p>Street: <%= @application.street %></p>
-<p>City: <%= @application.city %></p>
-<p>State: <%= @application.state %></p>
-<p>Zip Code: <%= @application.zip_code %></p>
-<p>Description: <%= @application.description %></p>
+<section id='app-info'>
+  <h2>Application Information</h2>
+  <p>Status: <span class="bold"><%= @application.status %></span></p>
+  <p>Name: <%= @application.name %></p>
+  <p>Street: <%= @application.street %></p>
+  <p>City: <%= @application.city %></p>
+  <p>State: <%= @application.state %></p>
+  <p>Zip Code: <%= @application.zip_code %></p>
+  <p>Description: <%= @application.description %></p>
+</section>
+
+<section id='app-pets'>
+  <h3>Pets on This Application</h3>
+  <ol>
+    <% @application.pets.each do |pet| %>
+      <li><a href="/pets/<%= pet.id %>"><%= pet.name %></a></li>
+    <% end %>
+  </ol>
+</section>
