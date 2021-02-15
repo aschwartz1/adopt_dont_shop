@@ -1,6 +1,6 @@
 <h1>Create New Application</h1>
 
-<%= form_with id: 'new-form', url: "/applications", method: :post do |form| %>
+<%= form_with id: 'new-form', url: "/applications", method: :post, local: true do |form| %>
   <%= form.label(:name, 'Name:') %>
   <%= form.text_field(:name) %><br>
   <%= form.label(:street_address, 'Street Address:') %>
