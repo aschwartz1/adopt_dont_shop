@@ -13,7 +13,7 @@ RSpec.describe 'Applications new page' do
         fill_in(:zip_code, with: '12345')
         fill_in(:description, with: "Because I'm me.")
 
-        click_on(:submit)
+        click_on('Submit')
       end
 
       expect(current_path).to match(%r{applications/\d+})
