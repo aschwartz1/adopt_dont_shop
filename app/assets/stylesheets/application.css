@@ -36,6 +36,10 @@ header {
   text-align: center;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .header-link {
   background-color: #fbf5cd;
   font-size: 20px;

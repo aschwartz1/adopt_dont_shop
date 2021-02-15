@@ -1,0 +1,17 @@
+<h1>Create New Application</h1>
+
+<%= form_with id: 'new-form', url: "/applications", method: :post do |form| %>
+  <%= form.label(:name, 'Name:') %>
+  <%= form.text_field(:name) %><br>
+  <%= form.label(:street_address, 'Street Address:') %>
+  <%= form.text_field(:street) %><br>
+  <%= form.label(:city, 'City:') %>
+  <%= form.text_field(:city) %><br>
+  <%= form.label(:state, 'State:') %>
+  <%= form.text_field(:state) %><br>
+  <%= form.label(:zip_code, 'Zip Code:') %>
+  <%= form.text_field(:zip_code) %><br>
+  <%= form.label(:description, 'Why do you want to adopt?') %>
+  <%= form.text_area(:description) %><br>
+  <%= form.submit(:submit, value: 'Submit') %>
+<% end %>
