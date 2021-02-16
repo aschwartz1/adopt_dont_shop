@@ -5,6 +5,7 @@ RSpec.describe 'Applications show page' do
     shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
     @sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
     @barky = shelter.pets.create!(image:"", name: "Barky", description: "dog", approximate_age: 4, sex: "female")
+    @beckett = shelter.pets.create!(image:"", name: "Beckett", description: "cat", approximate_age: 2, sex: "male")
     @application = Application.create!(application_params)
 
     ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
@@ -13,7 +14,7 @@ RSpec.describe 'Applications show page' do
 
   describe 'as a visitor' do
     it 'shows application info' do
-      visit "applications/#{@application.id}"
+      visit "/applications/#{@application.id}"
 
       within('#app-info') do
         expect(page).to have_content('Benedict Cumberbatch')
@@ -27,7 +28,7 @@ RSpec.describe 'Applications show page' do
     end
 
     it 'shows all pets on the application' do
-      visit "applications/#{@application.id}"
+      visit "/applications/#{@application.id}"
 
       within('#app-pets') do
         expect(page).to have_link(@sparky.name)
@@ -36,6 +37,27 @@ RSpec.describe 'Applications show page' do
         # Only testing one of the links
         click_link(@sparky.name)
         expect(current_path).to eq("/pets/#{@sparky.id}")
+      end
+    end
+
+    it 'only in progress applications can search for pets' do
+      @application.pending!
+      visit "/applications/#{@application.id}"
+
+      expect(page).to_not have_selector('#app-pets-search')
+    end
+
+    it 'allows searching for pets' do
+      visit "/applications/#{@application.id}"
+
+      within('#app-pets-search') do
+        fill_in :pet_search, with: 'Beckett'
+        click_button 'Search'
+      end
+
+      expect(current_path).to eq("/applications/#{@application.id}")
+      within('#app-pets-search') do
+        expect(page).to have_content('Beckett')
       end
     end
   end
