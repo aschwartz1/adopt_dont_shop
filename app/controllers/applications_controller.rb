@@ -12,15 +12,20 @@ class ApplicationsController < ApplicationController
   end
 
   def create
-    new_app = Application.create!(application_params)
+    new_app = Application.new(application_params)
 
-    redirect_to "/applications/#{new_app.id}"
+    if new_app.save
+      redirect_to "/applications/#{new_app.id}"
+    else
+      flash.now[:error] = new_app.errors.full_messages.to_sentence
+      render :new
+    end
   end
 
   private
 
   def application_params
-    params.permit(:name, :street, :city, :state, :zip_code, :description)
+    params.permit(:name, :street, :city, :state, :zip_code)
   end
 
   def id_param
