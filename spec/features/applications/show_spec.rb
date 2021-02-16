@@ -61,15 +61,16 @@ RSpec.describe 'Applications show page' do
       end
     end
   end
+
+  def application_params
+    {
+      name: 'Benedict Cumberbatch',
+      street: '123 My Lane',
+      city: 'Denver',
+      state: 'CO',
+      zip_code: '12345',
+      description: "Because I'm me."
+    }
+  end
 end
 
-def application_params
-  {
-    name: 'Benedict Cumberbatch',
-    street: '123 My Lane',
-    city: 'Denver',
-    state: 'CO',
-    zip_code: '12345',
-    description: "Because I'm me."
-  }
-end

@@ -39,16 +39,17 @@ describe Application, type: :model do
       end
     end
   end
+
+  def application_params(status_symbol)
+    {
+      name: 'Benedict Cumberbatch',
+      street: '123 My Lane',
+      city: 'Denver',
+      state: 'CO',
+      zip_code: '12345',
+      description: "Because I'm me.",
+      status: status_symbol
+    }
+  end
 end
 
-def application_params(status_symbol)
-  {
-    name: 'Benedict Cumberbatch',
-    street: '123 My Lane',
-    city: 'Denver',
-    state: 'CO',
-    zip_code: '12345',
-    description: "Because I'm me.",
-    status: status_symbol
-  }
-end
