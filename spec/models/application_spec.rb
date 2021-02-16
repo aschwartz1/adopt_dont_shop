@@ -6,10 +6,12 @@ describe Application, type: :model do
   end
 
   describe 'validations' do
-    # it {should validate_presence_of :name}
-    # it {should validate_presence_of :description}
-    # it {should validate_presence_of :sex}
-    # it {should validate_numericality_of(:approximate_age).is_greater_than_or_equal_to(0)}
+    it { should validate_presence_of :name }
+    it { should validate_presence_of :street }
+    it { should validate_presence_of :city }
+    it { should validate_presence_of :state }
+    it { should validate_presence_of :zip_code }
+    it { should define_enum_for(:status).with(in_progress: 0, pending: 1, accepted: 2, rejected: 3) }
   end
 
   describe 'class methods' do
