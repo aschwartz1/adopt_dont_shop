@@ -40,6 +40,49 @@ describe Application, type: :model do
         expect(application.pretty_status).to eq('Rejected')
       end
     end
+
+    describe '#submittable' do
+      it 'can be submitted when in_progress and has pets' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        application = Application.create!(application_params(:in_progress))
+        application.pets.push(sparky)
+
+        expect(application.submittable?).to eq(true)
+      end
+
+      it 'must have pets to be submitted' do
+        application = Application.create!(application_params(:in_progress))
+        expect(application.submittable?).to eq(false)
+      end
+
+      it 'must be in_progress to be submitted' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        application = Application.create!(application_params(:pending))
+        application.pets.push(sparky)
+
+        expect(application.submittable?).to eq(false)
+      end
+    end
+
+    describe '#number_of_pets' do
+      it 'returns number of pets on the app' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        barky = shelter.pets.create!(image:"", name: "Barky", description: "dog", approximate_age: 4, sex: "female")
+        application = Application.create!(application_params(:in_progress))
+        application.pets.push(sparky)
+        application.pets.push(barky)
+
+        expect(application.number_of_pets).to eq(2)
+      end
+
+      it 'can be 0' do
+        application = Application.create!(application_params(:in_progress))
+        expect(application.number_of_pets).to eq(0)
+      end
+    end
   end
 
   def application_params(status_symbol)

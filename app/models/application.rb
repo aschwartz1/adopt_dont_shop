@@ -6,6 +6,14 @@ class Application < ApplicationRecord
 
   enum status: { in_progress: 0, pending: 1, accepted: 2, rejected: 3 }
 
+  def submittable?
+    in_progress? && number_of_pets > 0 # number_of_pets > 0
+  end
+
+  def number_of_pets
+    pets.count
+  end
+
   def pretty_status
     status.titleize
   end
