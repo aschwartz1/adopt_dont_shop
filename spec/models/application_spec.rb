@@ -19,6 +19,29 @@ describe Application, type: :model do
   end
 
   describe 'instance methods' do
+    describe '#add_pet' do
+      it 'can add pet to the application' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        barky = shelter.pets.create!(image:"", name: "Barky", description: "dog", approximate_age: 3, sex: "female")
+        application = Application.create!(application_params(:in_progress))
+
+        application.add_pet(sparky)
+        application.add_pet(barky)
+        expect(application.pets).to eq([sparky, barky])
+      end
+
+      it 'pets can only be added once' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        application = Application.create!(application_params(:in_progress))
+
+        application.add_pet(sparky)
+        application.add_pet(sparky)
+        expect(application.pets).to eq([sparky])
+      end
+    end
+
     describe '#pretty_status' do
       it 'prettify :in_progress' do
         application = Application.create!(application_params(:in_progress))
