@@ -1,9 +1,9 @@
 <h1>Create New Application</h1>
 
-<%= form_with id: 'new-form', url: "/applications", method: :post do |form| %>
+<%= form_with id: 'new-form', url: "/applications", method: :post, local: true do |form| %>
   <%= form.label(:name, 'Name:') %>
   <%= form.text_field(:name) %><br>
-  <%= form.label(:street_address, 'Street Address:') %>
+  <%= form.label(:street, 'Street Address:') %>
   <%= form.text_field(:street) %><br>
   <%= form.label(:city, 'City:') %>
   <%= form.text_field(:city) %><br>
@@ -11,7 +11,16 @@
   <%= form.text_field(:state) %><br>
   <%= form.label(:zip_code, 'Zip Code:') %>
   <%= form.text_field(:zip_code) %><br>
-  <%= form.label(:description, 'Why do you want to adopt?') %>
-  <%= form.text_area(:description) %><br>
+  <%# Not sure if need both required elements & rails flash messages? %>
+  <%# <%= form.label(:name, 'Name:') %1> %>
+  <%# <%= form.text_field(:name, required: true) %1><br> %>
+  <%# <%= form.label(:street, 'Street Address:') %1> %>
+  <%# <%= form.text_field(:street, required: true) %1><br> %>
+  <%# <%= form.label(:city, 'City:') %1> %>
+  <%# <%= form.text_field(:city, required: true) %1><br> %>
+  <%# <%= form.label(:state, 'State:') %1> %>
+  <%# <%= form.text_field(:state, required: true) %1><br> %>
+  <%# <%= form.label(:zip_code, 'Zip Code:') %1> %>
+  <%# <%= form.text_field(:zip_code, required: true) %1><br> %>
   <%= form.submit(:submit, value: 'Submit') %>
 <% end %>

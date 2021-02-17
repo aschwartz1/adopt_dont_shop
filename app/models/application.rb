@@ -2,13 +2,19 @@ class Application < ApplicationRecord
   has_many :application_pets
   has_many :pets, through: :application_pets
 
-  enum status: { 'In Progress' => 0, 'Pending' => 1, 'Accepted' => 2, 'Rejected' => 3 }
+  validates :name, :street, :city, :state, :zip_code, presence: true
 
-  # validates_presence_of :name, :description, :approximate_age, :sex
+  enum status: { in_progress: 0, pending: 1, accepted: 2, rejected: 3 }
 
-  # validates :approximate_age, numericality: {
-  #             greater_than_or_equal_to: 0
-  #           }
+  def submittable?
+    in_progress? && number_of_pets > 0 # number_of_pets > 0
+  end
 
-  # enum sex: [:female, :male]
+  def number_of_pets
+    pets.count
+  end
+
+  def pretty_status
+    status.titleize
+  end
 end

@@ -1,6 +1,16 @@
 <section id='app-info'>
   <h2>Application Information</h2>
-  <p>Status: <span class="bold"><%= @application.status %></span></p>
+  <% if @application.submittable? %>
+    <section id='submit-app'>
+      <%= form_with url: "/applications/#{@application.id}", method: :patch, local:true do |form| %>
+        <%= form.label :description, 'Explain why you want to adopt:' %>
+        <%= form.text_area :description, id: 'description' %><br>
+        <%= form.submit :submit, value: 'Submit Application' %>
+      <% end %>
+    </section>
+  <% end %>
+  <hr>
+  <p>Status: <span class="bold"><%= @application.pretty_status %></span></p>
   <p>Name: <%= @application.name %></p>
   <p>Street: <%= @application.street %></p>
   <p>City: <%= @application.city %></p>
@@ -8,12 +18,36 @@
   <p>Zip Code: <%= @application.zip_code %></p>
   <p>Description: <%= @application.description %></p>
 </section>
-
+<hr>
 <section id='app-pets'>
+  <% if @application.in_progress? %>
+    <section id='app-pets-search'>
+      <%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |form| %>
+        <%= form.label :pet_search, 'Search for pet by name:' %>
+        <%= form.text_field :pet_search, value: @pet_search.to_s %>
+        <%= form.submit :search, value: 'Search' %>
+      <% end %>
+
+      <% if @pet_search %>
+        <h4>Search Results</h4>
+        <ol>
+          <% @search_results.each do |pet| %>
+            <li><%= pet.name %></li>
+            <%= form_with url: "/applications/#{@application.id}/pets", method: :post, local:true do |form| %>
+              <%= form.button 'Add Pet', id: "add-pet-#{pet.id}", type: :submit, name: 'pet_id', value: pet.id.to_s %>
+            <% end %>
+          <% end %>
+        </ol>
+      <% end %>
+    </section>
+  <% end %>
+
   <h3>Pets on This Application</h3>
-  <ol>
-    <% @application.pets.each do |pet| %>
-      <li><a href="/pets/<%= pet.id %>"><%= pet.name %></a></li>
-    <% end %>
-  </ol>
+  <section id='app-pets-all'>
+    <ol>
+      <% @application.pets.each do |pet| %>
+        <li><a href="/pets/<%= pet.id %>"><%= pet.name %></a></li>
+      <% end %>
+    </ol>
+  </section>
 </section>
