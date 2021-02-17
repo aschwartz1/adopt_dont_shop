@@ -12,6 +12,6 @@ class Pet < ApplicationRecord
   enum sex: [:female, :male]
 
   def self.fill_by_name(name)
-    where(name: name)
+    where('lower(name) like ?', "%#{name.downcase}%")
   end
 end
