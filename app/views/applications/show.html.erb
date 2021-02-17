@@ -1,5 +1,15 @@
 <section id='app-info'>
   <h2>Application Information</h2>
+  <% if @application.submittable? %>
+    <section id='submit-app'>
+      <%= form_with url: "/applications/#{@application.id}", method: :patch, local:true do |form| %>
+        <%= form.label :description, 'Explain why you want to adopt:' %>
+        <%= form.text_area :description, id: 'description' %><br>
+        <%= form.submit :submit, value: 'Submit Application' %>
+      <% end %>
+    </section>
+  <% end %>
+  <hr>
   <p>Status: <span class="bold"><%= @application.pretty_status %></span></p>
   <p>Name: <%= @application.name %></p>
   <p>Street: <%= @application.street %></p>
@@ -8,7 +18,7 @@
   <p>Zip Code: <%= @application.zip_code %></p>
   <p>Description: <%= @application.description %></p>
 </section>
-
+<hr>
 <section id='app-pets'>
   <% if @application.in_progress? %>
     <section id='app-pets-search'>

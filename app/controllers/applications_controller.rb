@@ -1,8 +1,8 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(id_param)
-    @pet_search = params[:pet_search]
 
+    @pet_search = params[:pet_search]
     if @pet_search
       @search_results = Pet.fill_by_name(@pet_search)
     end
@@ -20,6 +20,13 @@ class ApplicationsController < ApplicationController
       flash.now[:error] = new_app.errors.full_messages.to_sentence
       render :new
     end
+  end
+
+  def update
+    app = Application.find(id_param)
+    app.update(description: params[:description], status: Application.statuses[:pending])
+
+    redirect_to "/applications/#{app.id}"
   end
 
   private

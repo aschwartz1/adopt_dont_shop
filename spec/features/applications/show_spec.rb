@@ -84,6 +84,37 @@ RSpec.describe 'Applications show page' do
           expect(current_path).to eq("/pets/#{@sparky.id}")
         end
       end
+
+      it 'can submit when there are pets' do
+        ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
+        ApplicationPet.create!(application_id: @application.id, pet_id: @barky.id)
+
+        visit "/applications/#{@application.id}"
+
+        within('#submit-app') do
+          expect(page).to have_button('Submit Application')
+          fill_in('description', with: 'I have love to give')
+          click_button('Submit Application')
+        end
+
+        expect(current_path).to eq("/applications/#{@application.id}")
+
+        within('#app-info') do
+          expect(page).to have_content('Pending')
+        end
+
+        expect(page).to_not have_selector('#app-pets-search')
+      end
+
+      it 'has no submit button when no pets are added' do
+        ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
+        ApplicationPet.create!(application_id: @application.id, pet_id: @barky.id)
+        @application.pending!
+
+        visit "/applications/#{@application.id}"
+
+        expect(page).to_not have_selector('#submit-app')
+      end
     end
   end
 
