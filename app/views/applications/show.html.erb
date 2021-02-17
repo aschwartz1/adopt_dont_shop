@@ -23,6 +23,9 @@
         <ol>
           <% @search_results.each do |pet| %>
             <li><%= pet.name %></li>
+            <%= form_with url: "/applications/#{@application.id}/pets", method: :post, local:true do |form| %>
+              <%= form.button 'Add Pet', id: "add-pet-#{pet.id}", type: :submit, name: 'pet_id', value: pet.id.to_s %>
+            <% end %>
           <% end %>
         </ol>
       <% end %>
@@ -30,9 +33,11 @@
   <% end %>
 
   <h3>Pets on This Application</h3>
-  <ol>
-    <% @application.pets.each do |pet| %>
-      <li><a href="/pets/<%= pet.id %>"><%= pet.name %></a></li>
-    <% end %>
-  </ol>
+  <section id='app-pets-all'>
+    <ol>
+      <% @application.pets.each do |pet| %>
+        <li><a href="/pets/<%= pet.id %>"><%= pet.name %></a></li>
+      <% end %>
+    </ol>
+  </section>
 </section>
