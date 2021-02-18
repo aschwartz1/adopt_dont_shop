@@ -32,6 +32,21 @@ RSpec.describe 'Applications show page' do
         end
       end
 
+      it 'is case-insensitive and returns partial matches' do
+        visit "/applications/#{@application.id}"
+
+        within('#app-pets-search') do
+          fill_in :pet_search, with: 'ARKY'
+          click_button 'Search'
+        end
+
+        expect(current_path).to eq("/applications/#{@application.id}")
+        within('#app-pets-search') do
+          expect(page).to have_content('Sparky')
+          expect(page).to have_content('Barky')
+        end
+      end
+
       it 'I can add pets from search results to the application' do
         visit "/applications/#{@application.id}"
 

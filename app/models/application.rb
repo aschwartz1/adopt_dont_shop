@@ -6,8 +6,12 @@ class Application < ApplicationRecord
 
   enum status: { in_progress: 0, pending: 1, accepted: 2, rejected: 3 }
 
+  def add_pet(pet)
+    pets.push(pet) unless pets.exists?(id: pet.id)
+  end
+
   def submittable?
-    in_progress? && number_of_pets > 0 # number_of_pets > 0
+    in_progress? && number_of_pets > 0
   end
 
   def number_of_pets

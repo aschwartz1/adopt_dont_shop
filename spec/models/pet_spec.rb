@@ -43,12 +43,33 @@ describe Pet, type: :model do
   end
 
   describe 'class methods' do
-    it '.fill_by_name' do
-      shelter = Shelter.create!(name: 'Pet Rescue', address: '123 Adoption Ln.', city: 'Denver', state: 'CO', zip: '80222')
-      fluffy = shelter.pets.create!(sex: :female, name: "Fluffy", approximate_age: 3, description: 'super cute')
-      smoothy = shelter.pets.create!(sex: :female, name: "Smoothy", approximate_age: 4, description: 'a little strange')
+    describe '::fill_by_name' do
+      it 'can return based on exact match' do
+        shelter = Shelter.create!(name: 'Pet Rescue', address: '123 Adoption Ln.', city: 'Denver', state: 'CO', zip: '80222')
+        fluffy = shelter.pets.create!(sex: :female, name: "Fluffy", approximate_age: 3, description: 'super cute')
+        smoothy = shelter.pets.create!(sex: :female, name: "Smoothy", approximate_age: 4, description: 'a little strange')
+        sharpy = shelter.pets.create!(sex: :female, name: "Sharpy", approximate_age: 4, description: "Please don't touch")
 
-      expect(Pet.fill_by_name('Fluffy')).to eq([fluffy])
+        expect(Pet.fill_by_name('Fluffy')).to eq([fluffy])
+      end
+
+      it 'is case insensitive' do
+        shelter = Shelter.create!(name: 'Pet Rescue', address: '123 Adoption Ln.', city: 'Denver', state: 'CO', zip: '80222')
+        fluffy = shelter.pets.create!(sex: :female, name: "Fluffy", approximate_age: 3, description: 'super cute')
+        smoothy = shelter.pets.create!(sex: :female, name: "Smoothy", approximate_age: 4, description: 'a little strange')
+        sharpy = shelter.pets.create!(sex: :female, name: "Sharpy", approximate_age: 4, description: "Please don't touch")
+
+        expect(Pet.fill_by_name('fluffy')).to eq([fluffy])
+      end
+
+      it 'returns partial matches' do
+        shelter = Shelter.create!(name: 'Pet Rescue', address: '123 Adoption Ln.', city: 'Denver', state: 'CO', zip: '80222')
+        fluffy = shelter.pets.create!(sex: :female, name: "Fluffy", approximate_age: 3, description: 'super cute')
+        smoothy = shelter.pets.create!(sex: :female, name: "Smooth No-fluff", approximate_age: 4, description: 'a little strange')
+        sharpy = shelter.pets.create!(sex: :female, name: "Sharpy", approximate_age: 4, description: "Please don't touch")
+
+        expect(Pet.fill_by_name('Fluff')).to eq([fluffy, smoothy])
+      end
     end
   end
 end
