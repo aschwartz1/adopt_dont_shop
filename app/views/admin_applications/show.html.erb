@@ -1,13 +1,7 @@
 <section id='info'>
   <h2>Application Information</h2>
   <hr>
-  <p>Status: <span class="bold"><%= @application.pretty_status %></span></p>
-  <p>Name: <%= @application.name %></p>
-  <p>Street: <%= @application.street %></p>
-  <p>City: <%= @application.city %></p>
-  <p>State: <%= @application.state %></p>
-  <p>Zip Code: <%= @application.zip_code %></p>
-  <p>Description: <%= @application.description %></p>
+  <%= render partial: "applications/info", locals: { application: @application } %>
 </section>
 <hr>
 <h3>Pets on This Application</h3>
