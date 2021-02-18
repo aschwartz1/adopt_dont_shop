@@ -106,6 +106,24 @@ describe Application, type: :model do
         expect(application.number_of_pets).to eq(0)
       end
     end
+
+    describe '#status_for' do
+      it 'returns status for given pet id' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        sparky = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        application = Application.create!(application_params(:in_progress))
+
+        application.add_pet(sparky)
+
+        expect(application.status_for(sparky.id)).to eq('Pending')
+      end
+
+      it "returns empty string if pet doesn't exist" do
+        application = Application.create!(application_params(:in_progress))
+
+        expect(application.status_for(0)).to eq('')
+      end
+    end
   end
 
   def application_params(status_symbol)

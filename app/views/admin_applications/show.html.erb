@@ -16,9 +16,13 @@
     <% @application.pets.each do |pet| %>
       <li>
         <a href="/pets/<%= pet.id %>"><%= pet.name %></a>
-        <%= form_with url: "/applications/#{@application.id}/pets/#{pet.id}", method: :patch, local:true do |form| %>
-          <%= form.button 'Approve', id: "approve-pet-#{pet.id}", type: :submit, name: :to_status, value: 'approve' %>
-        <% end %>
+        if a_p.pending?
+          <%= form_with url: "/applications/#{@application.id}/pets/#{pet.id}", method: :patch, local:true do |form| %>
+            <%= form.button 'Approve', id: "approve-pet-#{pet.id}", type: :submit, name: :to_status, value: 'approve' %>
+          <% end %>
+        else
+          # print out it's status
+        end
       </li>
     <% end %>
   </ol>

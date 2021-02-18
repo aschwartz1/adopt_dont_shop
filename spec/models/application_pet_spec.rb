@@ -10,27 +10,42 @@ describe ApplicationPet, type: :model do
     it { should define_enum_for(:status).with(pending: 1, accepted: 2, rejected: 3) }
   end
 
-  # describe 'instance methods' do
-  #   describe '#pretty_status' do
-  #     it 'prettify :in_progress' do
-  #       application = Application.create!(application_params(:in_progress))
-  #       expect(application.pretty_status).to eq('In Progress')
-  #     end
+  describe 'instance methods' do
+    describe '#pretty_status' do
+      it 'prettify :pending' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        pet = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        app = Application.create!(application_params)
+        app_pet = ApplicationPet.create!(application_id: app.id, pet_id: pet.id, status: :pending)
+        expect(app_pet.pretty_status).to eq('Pending')
+      end
 
-  #     it 'prettify :pending' do
-  #       application = Application.create!(application_params(:pending))
-  #       expect(application.pretty_status).to eq('Pending')
-  #     end
+      it 'prettify :accepted' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        pet = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        app = Application.create!(application_params)
+        app_pet = ApplicationPet.create!(application_id: app.id, pet_id: pet.id, status: :accepted)
+        expect(app_pet.pretty_status).to eq('Accepted')
+      end
 
-  #     it 'prettify :accepted' do
-  #       application = Application.create!(application_params(:accepted))
-  #       expect(application.pretty_status).to eq('Accepted')
-  #     end
+      it 'prettify :rejected' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        pet = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        app = Application.create!(application_params)
+        app_pet = ApplicationPet.create!(application_id: app.id, pet_id: pet.id, status: :rejected)
+        expect(app_pet.pretty_status).to eq('Rejected')
+      end
+    end
+  end
 
-  #     it 'prettify :rejected' do
-  #       application = Application.create!(application_params(:rejected))
-  #       expect(application.pretty_status).to eq('Rejected')
-  #     end
-  #   end
-  # end
+  def application_params
+    {
+      name: 'Benedict Cumberbatch',
+      street: '123 My Lane',
+      city: 'Denver',
+      state: 'CO',
+      zip_code: '12345',
+      description: "Because I'm me.",
+    }
+  end
 end
