@@ -1,0 +1,25 @@
+<section id='info'>
+  <h2>Application Information</h2>
+  <hr>
+  <p>Status: <span class="bold"><%= @application.pretty_status %></span></p>
+  <p>Name: <%= @application.name %></p>
+  <p>Street: <%= @application.street %></p>
+  <p>City: <%= @application.city %></p>
+  <p>State: <%= @application.state %></p>
+  <p>Zip Code: <%= @application.zip_code %></p>
+  <p>Description: <%= @application.description %></p>
+</section>
+<hr>
+<h3>Pets on This Application</h3>
+<section id='pets'>
+  <ol>
+    <% @application.pets.each do |pet| %>
+      <li>
+        <a href="/pets/<%= pet.id %>"><%= pet.name %></a>
+        <%= form_with url: "/applications/#{@application.id}/pets/#{pet.id}", method: :patch, local:true do |form| %>
+          <%= form.button 'Approve', id: "approve-pet-#{pet.id}", type: :submit, name: :to_status, value: 'approve' %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+</section>
