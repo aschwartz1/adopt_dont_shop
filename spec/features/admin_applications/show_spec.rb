@@ -75,10 +75,6 @@ RSpec.describe 'Admin applications show page' do
         expect(page).to have_content('Rejected')
       end
     end
-
-    xit 'shows flash message if update goes wrong' do
-      # TODO how force into the state which hits the rescue in `AdminApplications#update`?
-    end
   end
 
   def application_params
