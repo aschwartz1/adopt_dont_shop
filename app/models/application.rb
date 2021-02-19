@@ -21,4 +21,13 @@ class Application < ApplicationRecord
   def pretty_status
     status.titleize
   end
+
+  def status_for(pet_id)
+    app_pet = application_pets.where(pet_id: pet_id).first
+    if app_pet
+      app_pet.pretty_status
+    else
+      ''
+    end
+  end
 end
