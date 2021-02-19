@@ -10,6 +10,30 @@ describe ApplicationPet, type: :model do
     it { should define_enum_for(:status).with(pending: 1, accepted: 2, rejected: 3) }
   end
 
+  describe 'class methods' do
+    describe '::applications_with_pets' do
+      it 'works' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        pet = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        app = Application.create!(application_params)
+        ApplicationPet.create!(application_id: app.id, pet_id: pet.id, status: :pending)
+
+        result = ApplicationPet.applications_with_pets(app.id)
+        expect(result.count).to eq(1)
+      end
+
+      it 'has access to pet objects' do
+        shelter = Shelter.create!(name: "Shady Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
+        pet = shelter.pets.create!(image:"", name: "Sparky", description: "dog", approximate_age: 2, sex: "male")
+        app = Application.create!(application_params)
+        ApplicationPet.create!(application_id: app.id, pet_id: pet.id, status: :pending)
+
+        result = ApplicationPet.applications_with_pets(app.id)
+        expect(result.first.pet.name).to eq('Sparky')
+      end
+    end
+  end
+
   describe 'instance methods' do
     describe '#pretty_status' do
       it 'prettify :pending' do

@@ -1,20 +1,26 @@
 require 'rails_helper'
 
-describe Shelter, type: :model do
-  describe 'relationships' do
-    it { should have_many :pets }
+RSpec.describe 'Admin shelters index page' do
+  before :each do
   end
 
-  describe 'class methods' do
-    it '::all_reverse_name_sort' do
+  describe 'all shelters section' do
+    it 'shows shelters in reverse alphabetical order' do
       shelter1 = Shelter.create!(name: "A Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
       shelter2 = Shelter.create!(name: "B Shelter", address: "123 Silly Ave", city: "Longmont", state: "CO", zip: 80012)
       shelter3 = Shelter.create!(name: "C Shelter", address: "102 Shelter Dr.", city: "Commerce City", state: "CO", zip: 80022)
 
-      expect(Shelter.all_reverse_name_sort).to eq([shelter3, shelter2, shelter1])
-    end
+      visit '/admin/shelters'
 
-    it '::with_pending_applications' do
+      within('#all-shelters') do
+        actual_order = page.all('.shelter-name').map(&:text)
+        expect(actual_order).to eq(['C Shelter', 'B Shelter', 'A Shelter'])
+      end
+    end
+  end
+
+  describe 'pending applications section' do
+    it 'shows shelters with pending applications' do
       shelter1 = Shelter.create!(name: "A Shelter", address: "123 Shady Ave", city: "Denver", state: "CO", zip: 80011)
       shelter2 = Shelter.create!(name: "B Shelter", address: "123 Silly Ave", city: "Longmont", state: "CO", zip: 80012)
       shelter3 = Shelter.create!(name: "C Shelter", address: "102 Shelter Dr.", city: "Commerce City", state: "CO", zip: 80022)
@@ -28,7 +34,12 @@ describe Shelter, type: :model do
       in_progress_app = Application.create!(application_params(:in_progress))
       in_progress_app.pets.push(beckett)
 
-      expect(Shelter.with_pending_applications).to eq([shelter1, shelter2])
+      visit '/admin/shelters'
+
+      within('#pending-shelters') do
+        actual_pending_shelters = page.all('.shelter-name').map(&:text)
+        expect(actual_pending_shelters).to eq(['A Shelter', 'B Shelter'])
+      end
     end
   end
 

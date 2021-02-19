@@ -39,39 +39,41 @@ RSpec.describe 'Admin applications show page' do
     end
   end
 
-  it 'has a button to approve each listed pet' do
-    ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
-    ApplicationPet.create!(application_id: @application.id, pet_id: @barky.id)
+  describe 'approve/reject pets' do
+    it 'has a button to approve each listed pet' do
+      ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
+      ApplicationPet.create!(application_id: @application.id, pet_id: @barky.id)
 
-    visit "/admin/applications/#{@application.id}"
+      visit "/admin/applications/#{@application.id}"
 
-    within("#pet-#{@sparky.id}") do
-      click_button('Approve')
+      within("#pet-#{@sparky.id}") do
+        click_button('Approve')
+      end
+
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+
+      within("#pet-#{@sparky.id}") do
+        expect(page).to_not have_button('Approve')
+        expect(page).to have_content('Accepted')
+      end
     end
 
-    expect(current_path).to eq("/admin/applications/#{@application.id}")
+    it 'has a button to reject each listed pet' do
+      ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
+      ApplicationPet.create!(application_id: @application.id, pet_id: @barky.id)
 
-    within("#pet-#{@sparky.id}") do
-      expect(page).to_not have_button('Approve')
-      expect(page).to have_content('Accepted')
-    end
-  end
+      visit "/admin/applications/#{@application.id}"
 
-  it 'has a button to reject each listed pet' do
-    ApplicationPet.create!(application_id: @application.id, pet_id: @sparky.id)
-    ApplicationPet.create!(application_id: @application.id, pet_id: @barky.id)
+      within("#pet-#{@sparky.id}") do
+        click_button('Reject')
+      end
 
-    visit "/admin/applications/#{@application.id}"
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
 
-    within("#pet-#{@sparky.id}") do
-      click_button('Reject')
-    end
-
-    expect(current_path).to eq("/admin/applications/#{@application.id}")
-
-    within("#pet-#{@sparky.id}") do
-      expect(page).to_not have_button('Reject')
-      expect(page).to have_content('Rejected')
+      within("#pet-#{@sparky.id}") do
+        expect(page).to_not have_button('Reject')
+        expect(page).to have_content('Rejected')
+      end
     end
   end
 
