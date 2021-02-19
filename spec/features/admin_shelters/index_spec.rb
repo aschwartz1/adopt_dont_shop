@@ -11,7 +11,9 @@ RSpec.describe 'Admin shelters index page' do
 
     visit '/admin/shelters'
 
-    actual_order = page.all('.shelter-name').map(&:text)
-    expect(actual_order).to eq(['C Shelter', 'B Shelter', 'A Shelter'])
+    within('#all-shelters') do
+      actual_order = page.all('.shelter-name').map(&:text)
+      expect(actual_order).to eq(['C Shelter', 'B Shelter', 'A Shelter'])
+    end
   end
 end
