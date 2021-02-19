@@ -23,7 +23,7 @@ class Application < ApplicationRecord
   end
 
   def status_for(pet_id)
-    app_pet = ApplicationPet.find_by(application_id: id, pet_id: pet_id)
+    app_pet = application_pets.where(pet_id: pet_id).first
     if app_pet
       app_pet.pretty_status
     else

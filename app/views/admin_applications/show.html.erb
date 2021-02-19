@@ -4,19 +4,22 @@
   <%= render partial: "applications/info", locals: { application: @application } %>
 </section>
 <hr>
-<h3>Pets on This Application</h3>
 <section id='pets'>
+<h3>Pets on This Application</h3>
   <ol>
-    <% @application.pets.each do |pet| %>
+    <% @application_pets.each do |application_pet| %>
       <li>
-        <a href="/pets/<%= pet.id %>"><%= pet.name %></a>
-        if a_p.pending?
-          <%= form_with url: "/applications/#{@application.id}/pets/#{pet.id}", method: :patch, local:true do |form| %>
-            <%= form.button 'Approve', id: "approve-pet-#{pet.id}", type: :submit, name: :to_status, value: 'approve' %>
+        <div id="pet-<%= application_pet.pet_id %>">
+          <a href="/pets/<%= application_pet.pet_id %>"><%= application_pet.pet.name %></a>
+          <% if application_pet.pending? %>
+            <%= form_with url: "/applications/#{application_pet.application_id}/pets/#{application_pet.pet_id}", method: :patch, local:true do |form| %>
+              <%= form.button 'Approve', type: :submit, name: :admin_action, value: 'approve' %>
+              <%= form.button 'Reject', type: :submit, name: :admin_action, value: 'reject' %>
+            <% end %>
+          <% else %>
+            | <%= application_pet.pretty_status %>
           <% end %>
-        else
-          # print out it's status
-        end
+        </div>
       </li>
     <% end %>
   </ol>

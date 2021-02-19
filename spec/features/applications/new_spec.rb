@@ -12,16 +12,6 @@ RSpec.describe 'Applications new page' do
 
         expect(page).to have_css('.flash-message')
       end
-
-      xit 'I receive required form field notices' do
-        visit '/applications/new'
-
-        expect(page.find('#name[required=required]'))
-        expect(page.find('#street[required=required]'))
-        expect(page.find('#city[required=required]'))
-        expect(page.find('#state[required=required]'))
-        expect(page.find('#zip_code[required=required]'))
-      end
     end
 
     describe 'and I fill out all form fields' do
