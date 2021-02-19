@@ -1,8 +1,7 @@
 class AdminApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
-    # TODO if this works, move it to the model
-    @application_pets = ApplicationPet.where(application_id: params[:id]).joins(:pet)
+    @application_pets = ApplicationPet.applications_with_pets(params[:id])
   end
 
   def update
